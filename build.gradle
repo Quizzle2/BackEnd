@@ -1,0 +1,100 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.4'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.ll'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    byteBuddyAgent
+
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.3"
+    }
+}
+
+dependencies {
+    // Spring Boot Starters
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    // Spring Session + Redis
+    implementation 'org.springframework.session:spring-session-data-redis'
+
+    // Redisson
+    implementation 'org.redisson:redisson-spring-boot-starter:3.27.1'
+    implementation 'org.redisson:redisson-spring-data-31:3.27.1'
+
+    // Spring Messaging (WebSocket/STOMP)
+    implementation 'org.springframework:spring-messaging'
+
+    // JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    // DB Drivers
+    implementation 'com.mysql:mysql-connector-j:8.0.33'
+    runtimeOnly 'com.h2database:h2'
+
+    // AWS SDK for S3 (Latest version for compatibility with Spring Boot 3.x)
+    implementation 'software.amazon.awssdk:s3:2.20.113'
+    implementation 'software.amazon.awssdk:auth:2.20.113'
+    implementation 'software.amazon.awssdk:regions:2.20.113'
+
+    // Spring Cloud AWS (Compatible with Spring Boot 3.x)
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.0'
+
+    // JSON 처리
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    // Logging
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+    implementation 'ch.qos.logback:logback-classic'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // DevTools
+    // developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // Swagger
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.1"
+
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    byteBuddyAgent 'net.bytebuddy:byte-buddy-agent:1.15.11'
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    jvmArgs "-javaagent:${configurations.byteBuddyAgent.singleFile}"
+
+}

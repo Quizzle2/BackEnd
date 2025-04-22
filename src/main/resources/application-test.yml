@@ -1,0 +1,60 @@
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ""
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+
+  websocket:
+    endpoint: /ws
+    allowed-origins:
+      - http://localhost:*
+      - http://127.0.0.1:*
+
+logging:
+  level:
+    com.ll.quizzle: DEBUG
+    org.springframework.web.socket: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
+
+server:
+  port: 0
+  error:
+    include-stacktrace: always
+    include-message: always
+
+custom:
+  site:
+    cookieDomain: localhost
+    frontUrl: "http://localhost:3000"
+    backUrl: "http://localhost:0"
+    name: Quizzle
+  cors:
+    allowed-origins:
+      - http://localhost:*
+      - http://127.0.0.1:*
+
+system:
+  systemEmail: system@quizzle.com
+  systemPasswordHash: $2a$10$yNOvzUXqY3HzYzQk1QbZBeYqeZMaGGZ3h4M4YBxzwHwMAQVbDXcXi
+  secondaryPasswordHash: $2a$10$yNOvzUXqY3HzYzQk1QbZBeYqeZMaGGZ3h4M4YBxzwHwMAQVbDXcXi
+
+
+
+cloud:
+  aws:
+    s3:
+      bucket: test-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
